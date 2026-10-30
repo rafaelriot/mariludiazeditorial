@@ -42,7 +42,7 @@
                 $tone = $p->category ? $p->category->getToneClasses() : null;
                 $url = base_url('historia/' . $p->slug);
             ?>
-            <div class="w-[85%] sm:w-[90%] flex-shrink-0 snap-center bg-white rounded-2xl border border-[#063B73]/10 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row group">
+            <div class="w-full flex-shrink-0 snap-center bg-white rounded-2xl border border-[#063B73]/10 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row group">
                 <!-- Imagen de Portada -->
                 <a href="<?= $url ?>" class="sm:w-2/5 aspect-[16/10] sm:aspect-auto bg-gray-100 overflow-hidden relative block">
                     <?php if ($cover): ?>
@@ -88,6 +88,18 @@
             </div>
         <?php endforeach; ?>
     </div>
+
+    <!-- Indicadores de puntos (dots) cuando hay más de una historia destacada -->
+    <?php if (count($pinnedPosts) > 1): ?>
+        <div class="flex items-center justify-center gap-1.5 mt-2.5">
+            <?php for ($i = 0; $i < count($pinnedPosts); $i++): ?>
+                <button @click="currentSlide = <?= $i ?>; scrollToSlide()"
+                        class="h-1.5 rounded-full transition-all duration-300"
+                        :class="currentSlide === <?= $i ?> ? 'w-5 bg-[#063B73]' : 'w-1.5 bg-gray-300 hover:bg-gray-400'"
+                        aria-label="Ir a diapositiva <?= $i + 1 ?>"></button>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
 </div>
 <?php endif; ?>
 
