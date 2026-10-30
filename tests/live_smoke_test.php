@@ -17,6 +17,10 @@ $endpoints = [
         'status' => 200,
         'must_contain' => ['Liderazgo'],
     ],
+    '/historia/el-arte-de-liderar-con-serenidad' => [
+        'status' => 200,
+        'must_contain' => ['El arte de liderar con serenidad', 'BlogPosting', 'Marilú Díaz'],
+    ],
     '/sitemap.xml' => [
         'status' => 200,
         'content_type' => 'application/xml',

@@ -55,13 +55,19 @@
           "publisher": { "@id": "<?= base_url('#author') ?>" }
         }
         <?php if (isset($post)): ?>
+        <?php
+            $pubDate = $post->published_at ?? $post->created_at;
+            $pubIso = $pubDate instanceof \DateTimeInterface ? $pubDate->format('c') : (is_string($pubDate) ? date('c', strtotime($pubDate)) : date('c'));
+            $modDate = $post->updated_at ?? $post->created_at;
+            $modIso = $modDate instanceof \DateTimeInterface ? $modDate->format('c') : (is_string($modDate) ? date('c', strtotime($modDate)) : date('c'));
+        ?>
         ,{
           "@type": "BlogPosting",
           "headline": "<?= esc($post->title ?: ($post->excerpt ?: 'Historia de Marilú Díaz')) ?>",
           "description": "<?= esc($post->meta_description ?: ($post->excerpt ?: 'Historia de Marilú Díaz')) ?>",
           "image": "<?= esc($ogImage ?? base_url('assets/brand/isotipo.png')) ?>",
-          "datePublished": "<?= ($post->published_at ?? $post->created_at)->toIso8601String() ?>",
-          "dateModified": "<?= ($post->updated_at ?? $post->created_at)->toIso8601String() ?>",
+          "datePublished": "<?= $pubIso ?>",
+          "dateModified": "<?= $modIso ?>",
           "author": { "@id": "<?= base_url('#author') ?>" },
           "publisher": { "@id": "<?= base_url('#author') ?>" },
           "mainEntityOfPage": "<?= current_url() ?>"
