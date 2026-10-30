@@ -19,3 +19,4 @@ class SubscriberModel extends Model
         'email' => 'required|valid_email|is_unique[subscribers.email,id,{id}]',
     ];
 }
+

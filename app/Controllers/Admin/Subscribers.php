@@ -60,3 +60,4 @@ class Subscribers extends BaseController
         return redirect()->back()->with('message', 'Suscriptor eliminado.');
     }
 }
+

@@ -87,6 +87,14 @@
     </div>
 <?php endif; ?>
 
+<!-- Indicador de búsqueda activa -->
+<?php if (! empty($currentSearch)): ?>
+    <div class="mb-4 flex items-center justify-between bg-white px-4 py-2.5 rounded-2xl border border-gray-200 text-xs">
+        <span class="text-[#5A6776]">Resultados de búsqueda para: <strong class="text-[#063B73]">&ldquo;<?= esc($currentSearch) ?>&rdquo;</strong></span>
+        <a href="<?= base_url() ?>" class="text-xs text-red-600 hover:underline">Limpiar búsqueda</a>
+    </div>
+<?php endif; ?>
+
 <!-- 5. FEED DE HISTORIAS DE UNA SOLA COLUMNA (ESTILO INSTAGRAM) -->
 <div id="feed-container">
     <?= view('site/partials/feed_items', ['posts' => $posts]) ?>

@@ -1,43 +1,4 @@
-<div class="mb-5"
-     x-data="{
-         query: '<?= esc($currentSearch ?? '') ?>',
-         isSearching: false,
-         timer: null,
-         onInput() {
-             clearTimeout(this.timer);
-             this.timer = setTimeout(() => {
-                 this.doSearch();
-             }, 350);
-         },
-         doSearch() {
-             const url = new URL(window.location.href);
-             if (this.query.trim().length > 0) {
-                 url.searchParams.set('q', this.query.trim());
-             } else {
-                 url.searchParams.delete('q');
-             }
-             url.searchParams.delete('page');
-             this.isSearching = true;
-
-             fetch(url.toString(), {
-                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
-             })
-             .then(res => res.text())
-             .then(html => {
-                 this.isSearching = false;
-                 const container = document.getElementById('feed-container');
-                 if (container) {
-                     container.innerHTML = html;
-                 }
-                 window.history.replaceState({}, '', url.toString());
-             })
-             .catch(() => this.isSearching = false);
-         },
-         clearSearch() {
-             this.query = '';
-             this.doSearch();
-         }
-     }">
+<div class="mb-5" x-data="liveSearch('<?= esc($currentSearch ?? '') ?>')">
     <div class="relative flex items-center">
         <!-- Icono Lupa -->
         <span class="absolute left-3.5 text-gray-400 pointer-events-none">
@@ -55,7 +16,7 @@
         <button type="button"
                 x-show="query.length > 0"
                 @click="clearSearch()"
-                class="absolute right-3 text-gray-400 hover:text-gray-600 text-xs w-5 h-5 flex items-center justify-center rounded-full bg-gray-100"
+                class="absolute right-3 text-gray-400 hover:text-gray-600 text-xs w-5 h-5 flex items-center justify-center rounded-full bg-gray-100 cursor-pointer"
                 title="Limpiar búsqueda">
             ✕
         </button>

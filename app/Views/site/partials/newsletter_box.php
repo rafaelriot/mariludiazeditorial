@@ -1,45 +1,5 @@
 <div class="my-8 bg-gradient-to-br from-[#063B73] to-[#042850] rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-xl"
-     x-data="{
-         email: '',
-         isSubmitting: false,
-         subscribed: false,
-         errorMessage: '',
-         submit() {
-             if (!this.email.trim() || this.isSubmitting) return;
-             this.isSubmitting = true;
-             this.errorMessage = '';
-
-             const csrfName = document.querySelector('meta[name="csrf-token-name"]')?.content || 'csrf_test_name';
-             const csrfHash = document.querySelector('meta[name="csrf-token"]')?.content;
-
-             const formData = new FormData();
-             formData.append('email', this.email);
-             if (csrfHash) formData.append(csrfName, csrfHash);
-
-             fetch('<?= base_url('newsletter/suscribir') ?>', {
-                 method: 'POST',
-                 body: formData,
-                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
-             })
-             .then(res => res.json())
-             .then(data => {
-                 this.isSubmitting = false;
-                 if (data.success) {
-                     this.subscribed = true;
-                     this.email = '';
-                 } else {
-                     this.errorMessage = data.message || 'No se pudo registrar la suscripción.';
-                 }
-                 if (data.csrf_hash) {
-                     document.querySelectorAll('meta[name="csrf-token"]').forEach(m => m.content = data.csrf_hash);
-                 }
-             })
-             .catch(() => {
-                 this.isSubmitting = false;
-                 this.errorMessage = 'Ocurrió un error. Inténtalo nuevamente.';
-             });
-         }
-     }">
+     x-data="newsletterBox('<?= base_url('newsletter/suscribir') ?>')">
     <!-- Aura decorativa -->
     <div class="absolute -right-16 -bottom-16 w-60 h-60 rounded-full bg-[#D996A6]/20 blur-3xl pointer-events-none"></div>
 
@@ -65,7 +25,7 @@
                    required>
             <button type="submit"
                     :disabled="isSubmitting"
-                    class="px-5 py-3 bg-[#D996A6] hover:bg-[#e0a6b4] text-[#063B73] font-bold text-xs rounded-full transition-colors whitespace-nowrap shadow-md">
+                    class="px-5 py-3 bg-[#D996A6] hover:bg-[#e0a6b4] text-[#063B73] font-bold text-xs rounded-full transition-colors whitespace-nowrap shadow-md cursor-pointer">
                 <span x-text="isSubmitting ? 'Registrando...' : 'Suscribirme'"></span>
             </button>
         </form>

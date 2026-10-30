@@ -71,3 +71,4 @@ class Newsletter extends BaseController
         ]);
     }
 }
+

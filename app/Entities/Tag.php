@@ -13,3 +13,4 @@ class Tag extends Entity
         'id' => 'integer',
     ];
 }
+

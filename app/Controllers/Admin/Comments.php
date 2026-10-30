@@ -98,3 +98,4 @@ class Comments extends BaseController
         return redirect()->back()->with('message', 'Comentario eliminado.');
     }
 }
+

@@ -64,3 +64,4 @@ class CreateTagsAndSubscribersTables extends Migration
         $this->forge->dropTable('tags', true);
     }
 }
+

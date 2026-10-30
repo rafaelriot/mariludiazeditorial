@@ -129,6 +129,96 @@ Alpine.data('lightbox', () => ({
   }
 }));
 
+// Componente para suscripción al Newsletter
+Alpine.data('newsletterBox', (endpointUrl) => ({
+  email: '',
+  isSubmitting: false,
+  subscribed: false,
+  errorMessage: '',
+
+  submit() {
+    if (!this.email.trim() || this.isSubmitting) return;
+    this.isSubmitting = true;
+    this.errorMessage = '';
+
+    const csrfName = document.querySelector('meta[name="csrf-token-name"]')?.content || 'csrf_test_name';
+    const csrfHash = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    const formData = new FormData();
+    formData.append('email', this.email);
+    if (csrfHash) formData.append(csrfName, csrfHash);
+
+    fetch(endpointUrl || '/newsletter/suscribir', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.isSubmitting = false;
+      if (data.success) {
+        this.subscribed = true;
+        this.email = '';
+      } else {
+        this.errorMessage = data.message || 'No se pudo registrar la suscripción.';
+      }
+      if (data.csrf_hash) {
+        document.querySelectorAll('meta[name="csrf-token"]').forEach(m => m.content = data.csrf_hash);
+      }
+    })
+    .catch(() => {
+      this.isSubmitting = false;
+      this.errorMessage = 'Ocurrió un error. Inténtalo nuevamente.';
+    });
+  }
+}));
+
+// Componente para buscador inteligente reactivo
+Alpine.data('liveSearch', (initialQuery) => ({
+  query: initialQuery || '',
+  isSearching: false,
+  timer: null,
+
+  onInput() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.doSearch();
+    }, 350);
+  },
+
+  doSearch() {
+    const url = new URL(window.location.href);
+    if (this.query.trim().length > 0) {
+      url.searchParams.set('q', this.query.trim());
+    } else {
+      url.searchParams.delete('q');
+    }
+    url.searchParams.delete('page');
+    this.isSearching = true;
+
+    fetch(url.toString(), {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.text())
+    .then(html => {
+      this.isSearching = false;
+      const container = document.getElementById('feed-container');
+      if (container) {
+        container.innerHTML = html;
+      }
+      window.history.replaceState({}, '', url.toString());
+    })
+    .catch(() => {
+      this.isSearching = false;
+    });
+  },
+
+  clearSearch() {
+    this.query = '';
+    this.doSearch();
+  }
+}));
+
 window.Alpine = Alpine;
 Alpine.start();
 

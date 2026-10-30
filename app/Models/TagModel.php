@@ -48,3 +48,4 @@ class TagModel extends Model
         return array_unique($ids);
     }
 }
+

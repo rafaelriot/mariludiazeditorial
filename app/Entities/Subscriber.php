@@ -13,3 +13,4 @@ class Subscriber extends Entity
         'id' => 'integer',
     ];
 }
+
