@@ -16,7 +16,7 @@ class Seo extends BaseController
 
         return $this->response
             ->setContentType('application/xml')
-            ->setBody(view('site/seo/sitemap', ['posts' => $posts]));
+            ->setBody(view('site/seo/sitemap', ['posts' => $posts], ['debug' => false]));
     }
 
     public function rss()
@@ -26,7 +26,7 @@ class Seo extends BaseController
 
         return $this->response
             ->setContentType('application/rss+xml')
-            ->setBody(view('site/seo/rss', ['posts' => $posts]));
+            ->setBody(view('site/seo/rss', ['posts' => $posts], ['debug' => false]));
     }
 
     public function robots()
@@ -36,3 +36,4 @@ class Seo extends BaseController
         return $this->response->setContentType('text/plain')->setBody($body);
     }
 }
+
