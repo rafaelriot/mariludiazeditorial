@@ -31,6 +31,28 @@ class App extends BaseConfig
      */
     public array $allowedHostnames = ['192.168.1.118', 'localhost', '127.0.0.1'];
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Permitir hostnames de túneles públicos en desarrollo (ngrok, localtunnel, cloudflare)
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $host = parse_url('http://' . $_SERVER['HTTP_HOST'], PHP_URL_HOST);
+            if ($host && ! in_array($host, $this->allowedHostnames, true)) {
+                $this->allowedHostnames[] = $host;
+            }
+
+            // Adaptar baseURL dinámicamente al host actual para evitar contenido mixto y carga de CSS externa
+            $isHttps = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1))
+                || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+                || (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on')
+                || ($host && (str_ends_with($host, '.loca.lt') || str_ends_with($host, '.ngrok-free.app') || str_ends_with($host, '.trycloudflare.com')));
+
+            $scheme = $isHttps ? 'https' : 'http';
+            $this->baseURL = $scheme . '://' . $_SERVER['HTTP_HOST'] . '/';
+        }
+    }
+
     /**
      * --------------------------------------------------------------------------
      * Index File
