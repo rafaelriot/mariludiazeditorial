@@ -129,6 +129,69 @@ Alpine.data('lightbox', () => ({
   }
 }));
 
+// Componente para Carrusel de Historias Destacadas
+Alpine.data('featuredCarousel', (totalSlides) => ({
+  currentSlide: 0,
+  total: totalSlides || 1,
+  timer: null,
+
+  init() {
+    if (this.total > 1) {
+      this.startTimer();
+    }
+  },
+
+  startTimer() {
+    this.stopTimer();
+    this.timer = setInterval(() => {
+      this.next();
+    }, 5500);
+  },
+
+  stopTimer() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  },
+
+  next() {
+    this.currentSlide = (this.currentSlide + 1) % this.total;
+    this.scrollToSlide();
+  },
+
+  prev() {
+    this.currentSlide = (this.currentSlide - 1 + this.total) % this.total;
+    this.scrollToSlide();
+  },
+
+  goTo(idx) {
+    this.currentSlide = idx;
+    this.scrollToSlide();
+  },
+
+  scrollToSlide() {
+    const container = this.$refs.carousel;
+    if (!container) return;
+    const card = container.children[this.currentSlide];
+    if (card) {
+      const targetLeft = card.offsetLeft - container.offsetLeft;
+      container.scrollTo({ left: targetLeft, behavior: 'smooth' });
+    }
+  },
+
+  onScroll() {
+    const container = this.$refs.carousel;
+    if (!container || !container.children.length) return;
+    const scrollLeft = container.scrollLeft;
+    const width = container.children[0].offsetWidth || 1;
+    const newIdx = Math.round(scrollLeft / width);
+    if (newIdx !== this.currentSlide && newIdx >= 0 && newIdx < this.total) {
+      this.currentSlide = newIdx;
+    }
+  }
+}));
+
 // Componente para suscripción al Newsletter
 Alpine.data('newsletterBox', (endpointUrl) => ({
   email: '',
