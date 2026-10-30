@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #0B2038;
+    background-color: #F8F9FA;
+  }
+}
+
+.ck-editor__editable_inline {
+  min-height: 280px;
+  max-height: 500px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.75;
+}

@@ -2,116 +2,68 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of CodeIgniter Shield.
- *
- * (c) CodeIgniter Foundation <admin@codeigniter.com>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace Config;
 
 use CodeIgniter\Shield\Config\AuthGroups as ShieldAuthGroups;
 
+/**
+ * Roles del panel editorial.
+ *
+ * - admin:  control total (historias, multimedia, categorías, usuarios y ajustes).
+ * - editor: crea, edita y publica historias y gestiona su multimedia.
+ *
+ * Los visitantes NO tienen cuenta: el sitio público es de libre lectura.
+ */
 class AuthGroups extends ShieldAuthGroups
 {
     /**
-     * --------------------------------------------------------------------
-     * Default Group
-     * --------------------------------------------------------------------
-     * The group that a newly registered user is added to.
+     * Grupo asignado por defecto a usuarios creados sin grupo explícito.
      */
-    public string $defaultGroup = 'user';
+    public string $defaultGroup = 'editor';
 
     /**
-     * --------------------------------------------------------------------
-     * Groups
-     * --------------------------------------------------------------------
-     * An associative array of the available groups in the system, where the keys
-     * are the group names and the values are arrays of the group info.
-     *
-     * Whatever value you assign as the key will be used to refer to the group
-     * when using functions such as:
-     *      $user->addGroup('superadmin');
-     *
      * @var array<string, array<string, string>>
-     *
-     * @see https://codeigniter4.github.io/shield/quick_start_guide/using_authorization/#change-available-groups for more info
      */
     public array $groups = [
-        'superadmin' => [
-            'title'       => 'Super Admin',
-            'description' => 'Complete control of the site.',
-        ],
         'admin' => [
-            'title'       => 'Admin',
-            'description' => 'Day to day administrators of the site.',
+            'title'       => 'Administrador',
+            'description' => 'Control total de la plataforma.',
         ],
-        'developer' => [
-            'title'       => 'Developer',
-            'description' => 'Site programmers.',
-        ],
-        'user' => [
-            'title'       => 'User',
-            'description' => 'General users of the site. Often customers.',
-        ],
-        'beta' => [
-            'title'       => 'Beta User',
-            'description' => 'Has access to beta-level features.',
+        'editor' => [
+            'title'       => 'Editor',
+            'description' => 'Publica historias y gestiona multimedia.',
         ],
     ];
 
     /**
-     * --------------------------------------------------------------------
-     * Permissions
-     * --------------------------------------------------------------------
-     * The available permissions in the system.
-     *
-     * If a permission is not listed here it cannot be used.
+     * Permisos disponibles.
      */
     public array $permissions = [
-        'admin.access'        => 'Can access the sites admin area',
-        'admin.settings'      => 'Can access the main site settings',
-        'users.manage-admins' => 'Can manage other admins',
-        'users.create'        => 'Can create new non-admin users',
-        'users.edit'          => 'Can edit existing non-admin users',
-        'users.delete'        => 'Can delete existing non-admin users',
-        'beta.access'         => 'Can access beta-level features',
+        'admin.access'      => 'Acceder al panel administrativo',
+        'posts.manage'      => 'Crear, editar y publicar historias',
+        'media.manage'      => 'Subir y gestionar imágenes',
+        'categories.manage' => 'Gestionar categorías',
+        'users.manage'      => 'Gestionar usuarios del panel',
+        'settings.manage'   => 'Editar ajustes del sitio y del perfil',
     ];
 
     /**
-     * --------------------------------------------------------------------
-     * Permissions Matrix
-     * --------------------------------------------------------------------
-     * Maps permissions to groups.
-     *
-     * This defines group-level permissions.
+     * Matriz de permisos por grupo.
      */
     public array $matrix = [
-        'superadmin' => [
-            'admin.*',
-            'users.*',
-            'beta.*',
-        ],
         'admin' => [
-            'admin.access',
-            'users.create',
-            'users.edit',
-            'users.delete',
-            'beta.access',
+            'admin.*',
+            'posts.*',
+            'media.*',
+            'categories.*',
+            'users.*',
+            'settings.*',
         ],
-        'developer' => [
+        'editor' => [
             'admin.access',
-            'admin.settings',
-            'users.create',
-            'users.edit',
-            'beta.access',
-        ],
-        'user' => [],
-        'beta' => [
-            'beta.access',
+            'posts.manage',
+            'media.manage',
+            'categories.manage',
         ],
     ];
 }

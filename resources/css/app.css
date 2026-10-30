@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #0B2038;
+    background-color: #FBF9F7;
+  }
+}
+
+/* Clases de utilidad y componentes de marca */
+.font-serif {
+  font-family: 'Merriweather', Georgia, serif;
+}
+.font-sans {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Anillo de historia tipo Instagram con degradado corporativo */
+.story-ring {
+  background: linear-gradient(135deg, #D996A6 0%, #063B73 80%);
+  padding: 3px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.story-ring-inner {
+  background-color: #FFFFFF;
+  padding: 2px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Transiciones suaves */
+.transition-card {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ocultar barra de desplazamiento manteniendo funcionalidad */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,0 +1,22 @@
+{
+  "name": "marilu-diaz-editorial-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma blog editorial personal de Marilú Díaz",
+  "scripts": {
+    "dev:css": "tailwindcss -i resources/css/app.css -o public/assets/build/app.css --watch",
+    "build:css": "tailwindcss -i resources/css/app.css -o public/assets/build/app.css --minify",
+    "build:admin-css": "tailwindcss -i resources/css/admin.css -o public/assets/build/admin.css --minify",
+    "build:js": "node build-js.mjs",
+    "build": "npm run build:css && npm run build:admin-css && npm run build:js"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "alpinejs": "^3.14.8",
+    "@alpinejs/intersect": "^3.14.8",
+    "esbuild": "^0.25.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
