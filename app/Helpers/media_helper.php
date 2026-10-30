@@ -43,3 +43,4 @@ if (! function_exists('render_media_picture')) {
         return "<img src=\"{$src}\" {$srcsetAttribute} alt=\"{$alt}\" class=\"{$class}\" loading=\"{$loading}\" {$priority} {$wAttr} {$hAttr} {$bgStyle} />";
     }
 }
+

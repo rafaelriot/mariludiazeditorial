@@ -76,10 +76,11 @@ class Posts extends BaseController
     {
         $data = $this->extractFormData();
         $galleryIds = $this->extractGalleryIds();
+        $tagNames = $this->extractTagNames();
 
         try {
             $data['author_id'] = auth()->id();
-            $post = $this->postService->savePost($data, $galleryIds);
+            $post = $this->postService->savePost($data, $galleryIds, $tagNames);
 
             return redirect()->to(base_url('admin/historias'))
                 ->with('message', "Historia '{$post->slug}' guardada correctamente.");
@@ -123,9 +124,10 @@ class Posts extends BaseController
 
         $data = $this->extractFormData();
         $galleryIds = $this->extractGalleryIds();
+        $tagNames = $this->extractTagNames();
 
         try {
-            $this->postService->savePost($data, $galleryIds, $id);
+            $this->postService->savePost($data, $galleryIds, $tagNames, $id);
 
             return redirect()->to(base_url('admin/historias'))
                 ->with('message', 'Historia actualizada correctamente.');
@@ -190,4 +192,14 @@ class Posts extends BaseController
         }
         return array_filter(array_map('intval', (array) $rawIds));
     }
+
+    protected function extractTagNames(): array
+    {
+        $rawTags = (string) $this->request->getPost('tags');
+        if (empty(trim($rawTags))) return [];
+
+        $parts = explode(',', $rawTags);
+        return array_filter(array_map('trim', $parts));
+    }
 }
+

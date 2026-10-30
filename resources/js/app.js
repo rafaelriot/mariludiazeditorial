@@ -131,3 +131,4 @@ Alpine.data('lightbox', () => ({
 
 window.Alpine = Alpine;
 Alpine.start();
+

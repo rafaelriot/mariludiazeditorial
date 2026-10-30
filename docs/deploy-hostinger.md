@@ -98,3 +98,4 @@ chmod -R 775 /home/uXXXX/domains/tudominio.com/public_html/uploads
 ```
 
 Si tu plan no incluye SSH, puedes exportar la base de datos local desde phpMyAdmin e importarla directamente en el phpMyAdmin de Hostinger.
+

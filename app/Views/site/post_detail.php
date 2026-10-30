@@ -80,6 +80,21 @@
         <?= $post->content ?>
     </div>
 
+    <!-- ETIQUETAS (TAGS) DE LA HISTORIA -->
+    <?php if (! empty($post->tags)): ?>
+        <div class="flex items-center flex-wrap gap-2 my-6 pt-4 border-t border-gray-100">
+            <span class="text-xs font-semibold text-[#5A6776]">Temas:</span>
+            <?php foreach ($post->tags as $t): ?>
+                <a href="<?= base_url('etiqueta/' . $t->slug) ?>" class="text-xs px-3 py-1 rounded-full bg-[#FBF9F7] hover:bg-[#063B73] text-[#5A6776] hover:text-white border border-gray-200 transition-colors">
+                    #<?= esc($t->name) ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- BOTONES DE COMPARTIR EN REDES SOCIALES (1 CLIC) -->
+    <?= view('site/partials/share_buttons', ['post' => $post]) ?>
+
     <!-- Barra de interacción -->
     <div class="pt-6 border-t border-gray-100 flex items-center justify-between">
         <div class="flex items-center gap-4">
@@ -175,4 +190,55 @@
 
 </article>
 
+<!-- HISTORIAS RELACIONADAS -->
+<?php if (! empty($relatedPosts)): ?>
+    <div class="my-10">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="w-2 h-2 rounded-full bg-[#063B73]"></span>
+            <h3 class="font-serif font-bold text-lg text-[#063B73]">Historias Relacionadas</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <?php foreach ($relatedPosts as $rel): ?>
+                <?php
+                    $relCover = $rel->getCover();
+                    $relUrl = base_url('historia/' . $rel->slug);
+                ?>
+                <a href="<?= $relUrl ?>" class="bg-white rounded-2xl border border-[#063B73]/10 overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[16/10] bg-gray-100 overflow-hidden">
+                            <?php if ($relCover): ?>
+                                <?= render_media_picture($relCover, 'thumb', 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300') ?>
+                            <?php else: ?>
+                                <div class="w-full h-full bg-[#063B73]/10 flex items-center justify-center text-xs font-serif text-[#063B73]">
+                                    Marilú Díaz
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="p-4">
+                            <?php if ($rel->category): ?>
+                                <span class="text-[10px] font-semibold uppercase tracking-wider text-[#D996A6] block mb-1">
+                                    <?= esc($rel->category->name) ?>
+                                </span>
+                            <?php endif; ?>
+                            <h4 class="font-serif font-bold text-xs text-[#063B73] line-clamp-2 leading-snug group-hover:text-[#094E96]">
+                                <?= esc($rel->title ?: ($rel->excerpt ?: 'Historia recomendada')) ?>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div class="px-4 pb-3 text-[11px] text-[#5A6776]">
+                        <span><?= esc($rel->getRelativeTime()) ?></span>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<!-- BOLETÍN NEWSLETTER -->
+<?= view('site/partials/newsletter_box') ?>
+
 <?= $this->endSection() ?>
+

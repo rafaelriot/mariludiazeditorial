@@ -70,3 +70,4 @@ class PostLikeModel extends Model
         return $builder->countAllResults() > 0;
     }
 }
+

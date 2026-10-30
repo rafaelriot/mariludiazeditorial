@@ -30,7 +30,7 @@ class PostModel extends Model
      * - Publicadas o programadas cuya fecha ya venció
      * - Ordenadas primero por fijadas (is_pinned DESC) y luego por fecha (published_at DESC)
      */
-    public function getFeed(int $limit = 10, int $offset = 0, ?int $categoryId = null): array
+    public function getFeed(int $limit = 10, int $offset = 0, ?int $categoryId = null, ?int $tagId = null, ?string $search = null): array
     {
         $now = date('Y-m-d H:i:s');
         $this->groupStart()
@@ -45,9 +45,88 @@ class PostModel extends Model
             $this->where('category_id', $categoryId);
         }
 
+        if ($tagId) {
+            $db = \Config\Database::connect();
+            $postIdsWithTag = $db->table('post_tags')
+                ->select('post_id')
+                ->where('tag_id', $tagId)
+                ->get()
+                ->getResultArray();
+            $pIds = array_column($postIdsWithTag, 'post_id');
+            if (! empty($pIds)) {
+                $this->whereIn('id', $pIds);
+            } else {
+                return [];
+            }
+        }
+
+        if ($search) {
+            $this->groupStart()
+                ->like('title', $search)
+                ->orLike('excerpt', $search)
+                ->orLike('content', $search)
+            ->groupEnd();
+        }
+
         $posts = $this->orderBy('is_pinned', 'DESC')
             ->orderBy('published_at', 'DESC')
             ->findAll($limit, $offset);
+
+        $this->eagerLoadRelations($posts);
+        return $posts;
+    }
+
+    /**
+     * Obtiene las historias fijadas para el Carrusel Destacado superior
+     */
+    public function getPinnedCarousel(int $limit = 5): array
+    {
+        $now = date('Y-m-d H:i:s');
+        $posts = $this->where('is_pinned', 1)
+            ->groupStart()
+                ->where('status', 'published')
+                ->orGroupStart()
+                    ->where('status', 'scheduled')
+                    ->where('published_at <=', $now)
+                ->groupEnd()
+            ->groupEnd()
+            ->orderBy('published_at', 'DESC')
+            ->findAll($limit);
+
+        $this->eagerLoadRelations($posts);
+        return $posts;
+    }
+
+    /**
+     * Obtiene historias relacionadas para el pie de página de detalle
+     */
+    public function getRelatedPosts(int $currentPostId, ?int $categoryId = null, int $limit = 3): array
+    {
+        $now = date('Y-m-d H:i:s');
+        $builder = $this->where('id !=', $currentPostId)
+            ->groupStart()
+                ->where('status', 'published')
+                ->orGroupStart()
+                    ->where('status', 'scheduled')
+                    ->where('published_at <=', $now)
+                ->groupEnd()
+            ->groupEnd();
+
+        if ($categoryId) {
+            $builder->where('category_id', $categoryId);
+        }
+
+        $posts = $builder->orderBy('published_at', 'DESC')->findAll($limit);
+
+        // Si faltan por categoría, rellenar con las más recientes
+        if (count($posts) < $limit) {
+            $excludeIds = array_merge([$currentPostId], array_map(fn($p) => $p->id, $posts));
+            $morePosts = $this->whereNotIn('id', $excludeIds)
+                ->where('status', 'published')
+                ->orderBy('published_at', 'DESC')
+                ->findAll($limit - count($posts));
+            $posts = array_merge($posts, $morePosts);
+        }
 
         $this->eagerLoadRelations($posts);
         return $posts;
@@ -150,6 +229,27 @@ class PostModel extends Model
         foreach ($posts as $p) {
             $p->comments = $commentsMap[$p->id] ?? [];
         }
+
+        // 4. Cargar Etiquetas (Tags)
+        $tagPivot = $db->table('post_tags')
+            ->join('tags', 'tags.id = post_tags.tag_id')
+            ->whereIn('post_tags.post_id', $postIds)
+            ->select('post_tags.post_id, tags.id, tags.name, tags.slug')
+            ->get()
+            ->getResultArray();
+
+        $tagMap = [];
+        foreach ($tagPivot as $row) {
+            $tagMap[$row['post_id']][] = new \App\Entities\Tag([
+                'id'   => (int) $row['id'],
+                'name' => $row['name'],
+                'slug' => $row['slug'],
+            ]);
+        }
+
+        foreach ($posts as $p) {
+            $p->tags = $tagMap[$p->id] ?? [];
+        }
     }
 
     /**
@@ -178,6 +278,33 @@ class PostModel extends Model
 
         if (! empty($rows)) {
             $db->table('post_media')->insertBatch($rows);
+        }
+    }
+
+    /**
+     * Sincroniza las etiquetas asociadas a una historia
+     * @param list<int> $tagIds
+     */
+    public function syncTags(int $postId, array $tagIds): void
+    {
+        $db = \Config\Database::connect();
+        $db->table('post_tags')->where('post_id', $postId)->delete();
+
+        if (empty($tagIds)) return;
+
+        $rows = [];
+        foreach (array_unique($tagIds) as $tId) {
+            $tId = (int) $tId;
+            if ($tId > 0) {
+                $rows[] = [
+                    'post_id' => $postId,
+                    'tag_id'  => $tId,
+                ];
+            }
+        }
+
+        if (! empty($rows)) {
+            $db->table('post_tags')->insertBatch($rows);
         }
     }
 }

@@ -109,3 +109,4 @@ class Media extends BaseController
         return $this->response->setJSON(['success' => true, 'csrf_hash' => csrf_hash()]);
     }
 }
+

@@ -79,3 +79,4 @@ class Categories extends BaseController
         return redirect()->to(base_url('admin/categorias'))->with('message', 'Categoría eliminada.');
     }
 }
+

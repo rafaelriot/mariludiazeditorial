@@ -196,3 +196,4 @@ class MediaService
         return sprintf('#%02x%02x%02x', $r, $g, $b);
     }
 }
+

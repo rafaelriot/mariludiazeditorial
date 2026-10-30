@@ -21,3 +21,4 @@ class CategoryModel extends Model
         'tone' => 'in_list[navy,rose,sage]',
     ];
 }
+

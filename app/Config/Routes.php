@@ -9,6 +9,7 @@ use CodeIgniter\Router\RouteCollection;
 // ---------------------------------------------------------------------
 $routes->get('/', 'Site\Feed::index', ['as' => 'home']);
 $routes->get('categoria/(:segment)', 'Site\Feed::category/$1', ['as' => 'category']);
+$routes->get('etiqueta/(:segment)', 'Site\Feed::tag/$1', ['as' => 'tag']);
 $routes->get('historia/(:segment)', 'Site\Posts::show/$1', ['as' => 'post']);
 $routes->post('historia/(:num)/like', 'Site\Likes::toggle/$1', ['as' => 'post.like']);
 $routes->post('historia/(:num)/comentar', 'Site\Posts::comment/$1', ['as' => 'post.comment']);
@@ -16,6 +17,10 @@ $routes->get('sobre-mi', 'Site\Pages::about', ['as' => 'about']);
 $routes->get('sitemap.xml', 'Site\Seo::sitemap', ['as' => 'sitemap']);
 $routes->get('feed.xml', 'Site\Seo::rss', ['as' => 'rss']);
 $routes->get('robots.txt', 'Site\Seo::robots');
+
+// Newsletter
+$routes->post('newsletter/suscribir', 'Site\Newsletter::subscribe', ['as' => 'newsletter.subscribe']);
+$routes->get('newsletter/baja/(:segment)', 'Site\Newsletter::unsubscribe/$1', ['as' => 'newsletter.unsubscribe']);
 
 // Login con Google / Gmail para lectores
 $routes->get('auth/google', 'Site\Auth::google', ['as' => 'google.login']);
@@ -58,6 +63,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'gr
     $routes->post('categorias', 'Categories::create', ['as' => 'admin.categories.create']);
     $routes->post('categorias/(:num)', 'Categories::update/$1', ['as' => 'admin.categories.update']);
     $routes->post('categorias/(:num)/eliminar', 'Categories::delete/$1', ['as' => 'admin.categories.delete']);
+
+    // Comentarios (moderación)
+    $routes->get('comentarios', 'Comments::index', ['as' => 'admin.comments']);
+    $routes->post('comentarios/(:num)/estado/(:segment)', 'Comments::setStatus/$1/$2', ['as' => 'admin.comments.status']);
+    $routes->post('comentarios/(:num)/eliminar', 'Comments::delete/$1', ['as' => 'admin.comments.delete']);
+
+    // Suscriptores (newsletter)
+    $routes->get('suscriptores', 'Subscribers::index', ['as' => 'admin.subscribers']);
+    $routes->get('suscriptores/exportar', 'Subscribers::export', ['as' => 'admin.subscribers.export']);
+    $routes->post('suscriptores/(:num)/eliminar', 'Subscribers::delete/$1', ['as' => 'admin.subscribers.delete']);
 
     // Solo administradores
     $routes->group('', ['filter' => 'group:admin'], static function (RouteCollection $routes): void {

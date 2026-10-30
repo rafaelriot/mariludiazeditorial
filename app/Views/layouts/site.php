@@ -16,12 +16,60 @@
     <!-- Favicon con el isotipo oficial -->
     <link rel="icon" type="image/png" href="<?= base_url('assets/brand/isotipo.png') ?>">
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<?= current_url() ?>">
+
     <!-- Open Graph / Redes Sociales -->
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="<?= isset($post) ? 'article' : 'website' ?>">
+    <meta property="og:site_name" content="Marilú Díaz">
     <meta property="og:title" content="<?= esc($pageTitle ?? 'Marilú Díaz') ?>">
     <meta property="og:description" content="<?= esc($metaDescription ?? 'Blog personal de Marilú Díaz') ?>">
     <meta property="og:image" content="<?= esc($ogImage ?? base_url('assets/brand/isotipo.png')) ?>">
     <meta property="og:url" content="<?= current_url() ?>">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= esc($pageTitle ?? 'Marilú Díaz') ?>">
+    <meta name="twitter:description" content="<?= esc($metaDescription ?? 'Blog personal de Marilú Díaz') ?>">
+    <meta name="twitter:image" content="<?= esc($ogImage ?? base_url('assets/brand/isotipo.png')) ?>">
+
+    <!-- Schema.org Datos Estructurados JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "<?= base_url('#author') ?>",
+          "name": "Marilú Díaz",
+          "jobTitle": "Mentora y Autora",
+          "url": "<?= base_url('sobre-mi') ?>",
+          "image": "<?= base_url('assets/brand/isotipo.png') ?>",
+          "description": "Liderazgo consciente, estrategia y mentalidades con propósito."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "<?= base_url('#website') ?>",
+          "url": "<?= base_url() ?>",
+          "name": "Marilú Díaz — Plataforma Editorial",
+          "publisher": { "@id": "<?= base_url('#author') ?>" }
+        }
+        <?php if (isset($post)): ?>
+        ,{
+          "@type": "BlogPosting",
+          "headline": "<?= esc($post->title ?: ($post->excerpt ?: 'Historia de Marilú Díaz')) ?>",
+          "description": "<?= esc($post->meta_description ?: ($post->excerpt ?: 'Historia de Marilú Díaz')) ?>",
+          "image": "<?= esc($ogImage ?? base_url('assets/brand/isotipo.png')) ?>",
+          "datePublished": "<?= ($post->published_at ?? $post->created_at)->toIso8601String() ?>",
+          "dateModified": "<?= ($post->updated_at ?? $post->created_at)->toIso8601String() ?>",
+          "author": { "@id": "<?= base_url('#author') ?>" },
+          "publisher": { "@id": "<?= base_url('#author') ?>" },
+          "mainEntityOfPage": "<?= current_url() ?>"
+        }
+        <?php endif; ?>
+      ]
+    }
+    </script>
 
     <!-- Assets compilados con Tailwind CSS v4 y Alpine.js -->
     <link rel="stylesheet" href="<?= base_url('assets/build/app.css') ?>">
@@ -148,3 +196,4 @@
 
 </body>
 </html>
+

@@ -72,3 +72,4 @@ Combinación editorial optimizada:
 * Integración con CKEditor 5.
 * Gestor de imágenes con arrastre (Drag & Drop) y conversión automática a WebP.
 * Configuración de estado, fecha programada, categoría y simulador de Google SEO.
+

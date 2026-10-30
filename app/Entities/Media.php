@@ -33,3 +33,4 @@ class Media extends Entity
         return base_url($this->path);
     }
 }
+

@@ -40,11 +40,15 @@ class Posts extends BaseController
         $post->has_liked = $this->likeModel->hasLiked($post->id, $userId, $visitorHash);
 
         $comments = $this->commentModel->getApprovedForPost($post->id);
+        $relatedPosts = $this->postModel->getRelatedPosts($post->id, $post->category_id, 3);
 
         return view('site/post_detail', [
-            'post'      => $post,
-            'comments'  => $comments,
-            'pageTitle' => ($post->title ?: 'Historia') . ' — Marilú Díaz',
+            'post'         => $post,
+            'comments'     => $comments,
+            'relatedPosts' => $relatedPosts,
+            'pageTitle'    => ($post->title ?: 'Historia') . ' — Marilú Díaz',
+            'metaDescription' => $post->meta_description ?: ($post->excerpt ?: 'Historia de Marilú Díaz'),
+            'ogImage'      => $post->getCover() ? $post->getCover()->getUrl('lg') : base_url('assets/brand/isotipo.png'),
         ]);
     }
 
@@ -125,3 +129,4 @@ class Posts extends BaseController
         return hash('sha256', $vId . $this->request->getIPAddress());
     }
 }
+

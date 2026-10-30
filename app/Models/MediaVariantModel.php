@@ -14,3 +14,4 @@ class MediaVariantModel extends Model
     protected $useTimestamps = false;
     protected $allowedFields = ['media_id', 'size', 'path', 'width', 'height', 'bytes'];
 }
+

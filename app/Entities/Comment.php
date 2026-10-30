@@ -27,3 +27,4 @@ class Comment extends Entity
         return 'hace ' . (int) floor($diff / 86400) . ' d';
     }
 }
+

@@ -52,11 +52,17 @@
     </div>
 </div>
 
-<!-- 2. PASTILLAS DE CATEGORÍAS FILTRABLES (SCROLL HORIZONTAL) -->
+<!-- 2. HISTORIAS DESTACADAS EN CARRUSEL (SUPERIOR) -->
+<?= view('site/partials/featured_carousel', ['pinnedPosts' => $pinnedPosts ?? []]) ?>
+
+<!-- 3. BUSCADOR INTELIGENTE EN TIEMPO REAL -->
+<?= view('site/partials/search_bar', ['currentSearch' => $currentSearch ?? '']) ?>
+
+<!-- 4. PASTILLAS DE CATEGORÍAS FILTRABLES (SCROLL HORIZONTAL) -->
 <?php if (! empty($categories)): ?>
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-4">
         <a href="<?= base_url() ?>"
-           class="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-medium transition-all <?= ! $activeCategory ? 'bg-[#063B73] text-white shadow-sm' : 'bg-white text-[#5A6776] border border-gray-200 hover:border-[#063B73]' ?>">
+           class="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-medium transition-all <?= (! $activeCategory && ! $activeTag) ? 'bg-[#063B73] text-white shadow-sm' : 'bg-white text-[#5A6776] border border-gray-200 hover:border-[#063B73]' ?>">
             Todas
         </a>
         <?php foreach ($categories as $cat): ?>
@@ -73,10 +79,21 @@
     </div>
 <?php endif; ?>
 
-<!-- 3. FEED DE HISTORIAS DE UNA SOLA COLUMNA (ESTILO INSTAGRAM) -->
+<!-- Indicador de filtro por etiqueta activa -->
+<?php if ($activeTag): ?>
+    <div class="mb-4 flex items-center justify-between bg-white px-4 py-2 rounded-2xl border border-gray-200 text-xs">
+        <span class="text-[#5A6776]">Filtrado por etiqueta: <strong class="text-[#063B73]">#<?= esc($activeTag->name) ?></strong></span>
+        <a href="<?= base_url() ?>" class="text-xs text-red-600 hover:underline">Quitar filtro</a>
+    </div>
+<?php endif; ?>
+
+<!-- 5. FEED DE HISTORIAS DE UNA SOLA COLUMNA (ESTILO INSTAGRAM) -->
 <div id="feed-container">
     <?= view('site/partials/feed_items', ['posts' => $posts]) ?>
 </div>
+
+<!-- 6. BOLETÍN NEWSLETTER ESTILO SUBSTACK -->
+<?= view('site/partials/newsletter_box') ?>
 
 <!-- 4. CARGAR MÁS / SCROLL INFINITO PROGRESIVO -->
 <?php if ($hasMore): ?>
@@ -115,3 +132,4 @@
 <?php endif; ?>
 
 <?= $this->endSection() ?>
+

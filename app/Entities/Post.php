@@ -34,6 +34,12 @@ class Post extends Entity
     public ?Category $category = null;
 
     /**
+     * Etiquetas asociadas
+     * @var array<Tag>
+     */
+    public array $tags = [];
+
+    /**
      * Comentarios asociados
      * @var array<Comment>
      */
@@ -87,3 +93,4 @@ class Post extends Entity
         return $this->getFormattedDate();
     }
 }
+

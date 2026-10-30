@@ -32,8 +32,9 @@ class PostService
      * Purifica y guarda una publicación
      * @param array<string, mixed> $data
      * @param list<int> $galleryMediaIds
+     * @param list<string> $tagNames
      */
-    public function savePost(array $data, array $galleryMediaIds = [], ?int $id = null): Post
+    public function savePost(array $data, array $galleryMediaIds = [], array $tagNames = [], ?int $id = null): Post
     {
         // 1. Purificar HTML
         if (! empty($data['content'])) {
@@ -73,6 +74,15 @@ class PostService
 
         // 6. Sincronizar galería
         $this->postModel->syncGallery($postId, $galleryMediaIds);
+
+        // 7. Sincronizar etiquetas
+        if (! empty($tagNames)) {
+            $tagModel = model(\App\Models\TagModel::class);
+            $tagIds = $tagModel->findOrCreateMany($tagNames);
+            $this->postModel->syncTags($postId, $tagIds);
+        } else {
+            $this->postModel->syncTags($postId, []);
+        }
 
         /** @var Post $post */
         $post = $this->postModel->find($postId);

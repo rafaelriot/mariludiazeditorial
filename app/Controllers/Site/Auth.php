@@ -80,3 +80,4 @@ class Auth extends BaseController
         return redirect()->to(previous_url() ?: '/')->with('message', 'Sesión cerrada correctamente.');
     }
 }
+

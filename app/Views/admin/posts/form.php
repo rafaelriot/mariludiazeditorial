@@ -172,6 +172,17 @@
                 </select>
             </div>
 
+            <!-- Etiquetas / Tags -->
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-3">
+                <h3 class="font-serif font-bold text-sm text-[#063B73]">Etiquetas & Descriptores</h3>
+                <p class="text-[11px] text-[#5A6776]">Separa los temas con comas.</p>
+                <input type="text"
+                       name="tags"
+                       value="<?= old('tags', isset($post->tags) ? implode(', ', array_map(fn($t) => $t->name, $post->tags)) : '') ?>"
+                       placeholder="Liderazgo, Criterio, Equipos"
+                       class="w-full bg-[#F8F9FA] border border-gray-200 rounded-xl px-3.5 py-2 text-xs text-[#0B2038] focus:outline-none focus:border-[#063B73]">
+            </div>
+
             <!-- SEO & Meta Tags -->
             <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
                 <h3 class="font-serif font-bold text-sm text-[#063B73]">SEO & Redes Sociales</h3>
@@ -317,3 +328,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <?= $this->endSection() ?>
+

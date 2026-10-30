@@ -36,3 +36,4 @@ class CommentModel extends Model
             ->findAll($limit);
     }
 }
+
