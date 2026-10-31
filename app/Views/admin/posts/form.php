@@ -313,7 +313,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         { model: 'heading2', view: 'h2', title: 'Subtítulo Principal (H2)', class: 'ck-heading_heading2' },
                         { model: 'heading3', view: 'h3', title: 'Subsección (H3)', class: 'ck-heading_heading3' }
                     ]
-                }
+                },
+                removePlugins: [
+                    'ExportPdf',
+                    'ExportWord',
+                    'AIAssistant',
+                    'CKBox',
+                    'CKFinder',
+                    'EasyImage',
+                    'RealTimeCollaborativeComments',
+                    'RealTimeCollaborativeTrackChanges',
+                    'RealTimeCollaborativeRevisionHistory',
+                    'PresenceList',
+                    'Comments',
+                    'TrackChanges',
+                    'TrackChangesData',
+                    'RevisionHistory',
+                    'Pagination',
+                    'WProofreader',
+                    'MathType',
+                    'SlashCommand',
+                    'Template',
+                    'DocumentOutline',
+                    'FormatPainter',
+                    'TableOfContents',
+                    'PasteFromOfficeEnhanced',
+                    'CaseChange'
+                ]
             })
             .catch(error => {
                 console.error('Error inicializando CKEditor:', error);
