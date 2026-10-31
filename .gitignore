@@ -84,7 +84,8 @@ php_errors.log
 #-------------------------
 # Composer
 #-------------------------
-vendor/
+# vendor/ incluido para despliegue directo 1-click en Hostinger sin SSH
+# vendor/
 
 #-------------------------
 # IDE / Development Files
