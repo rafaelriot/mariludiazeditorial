@@ -136,3 +136,7 @@ node_modules/
 #-------------------------
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+# Cloudflared portable tunnel binary
+cloudflared.exe
+

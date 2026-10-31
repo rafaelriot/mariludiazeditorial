@@ -1,0 +1,17 @@
+# Marilú Díaz Editorial - Apache/LiteSpeed Root Controller
+# Redirige el tráfico a la carpeta public/ cuando el proyecto se clona directamente en public_html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Seguridad: Proteger archivos y carpetas sensibles del backend
+    RewriteRule ^(\.env|composer\.(json|lock)|package\.json|spark|README\.md) - [F,L]
+    RewriteRule ^(app|system|writable|tests|docs)/ - [F,L]
+
+    # 2. Redirigir peticiones a la carpeta public/ de forma transparente
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Deshabilitar listado de directorios
+Options -Indexes
