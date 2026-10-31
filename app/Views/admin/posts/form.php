@@ -220,24 +220,105 @@
     </div>
 </form>
 
+<style>
+.ck-editor__editable_inline {
+    min-height: 320px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #0B2038;
+}
+.ck.ck-dropdown.ck-font-family-dropdown .ck-button__label {
+    max-width: 140px;
+}
+.ck.ck-toolbar {
+    border-radius: 1rem 1rem 0 0 !important;
+    border-color: #e5e7eb !important;
+    background: #fbfbfc !important;
+}
+.ck.ck-editor__main > .ck-editor__editable {
+    border-radius: 0 0 1rem 1rem !important;
+    border-color: #e5e7eb !important;
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Inicializar CKEditor 5
-    if (document.querySelector('#editor')) {
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo'],
+    // 1. Inicializar CKEditor 5 con Selector de Tipografías
+    const editorEl = document.querySelector('#editor');
+    if (editorEl) {
+        const EditorClass = window.CKEDITOR?.ClassicEditor || window.ClassicEditor;
+        if (EditorClass) {
+            EditorClass.create(editorEl, {
+                toolbar: {
+                    items: [
+                        'fontFamily',
+                        'fontSize',
+                        '|',
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strikethrough',
+                        '|',
+                        'alignment',
+                        '|',
+                        'link',
+                        'bulletedList',
+                        'numberedList',
+                        'blockQuote',
+                        '|',
+                        'undo',
+                        'redo'
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+                fontFamily: {
+                    options: [
+                        'default',
+                        'Merriweather, serif',
+                        'Playfair Display, serif',
+                        'Cormorant Garamond, serif',
+                        'Bodoni Moda, serif',
+                        'Cinzel, serif',
+                        'Lora, serif',
+                        'Inter, sans-serif',
+                        'Montserrat, sans-serif',
+                        'Raleway, sans-serif',
+                        'Oswald, sans-serif',
+                        'DM Sans, sans-serif',
+                        'Caveat, cursive',
+                        'Dancing Script, cursive',
+                        'Great Vibes, cursive',
+                        'Space Mono, monospace'
+                    ],
+                    supportAllValues: true
+                },
+                fontSize: {
+                    options: [
+                        12,
+                        14,
+                        'default',
+                        18,
+                        20,
+                        24,
+                        30,
+                        36
+                    ],
+                    supportAllValues: true
+                },
                 heading: {
                     options: [
                         { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
-                        { model: 'heading2', view: 'h2', title: 'Subtítulo Principal', class: 'ck-heading_heading2' },
-                        { model: 'heading3', view: 'h3', title: 'Subsección', class: 'ck-heading_heading3' }
+                        { model: 'heading2', view: 'h2', title: 'Subtítulo Principal (H2)', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Subsección (H3)', class: 'ck-heading_heading3' }
                     ]
                 }
             })
             .catch(error => {
-                console.error(error);
+                console.error('Error inicializando CKEditor:', error);
             });
+        }
     }
 
     // 2. Subida de Galería Interactiva con Auto-Conversión WebP

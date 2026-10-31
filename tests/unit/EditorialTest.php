@@ -20,7 +20,7 @@ final class EditorialTest extends CIUnitTestCase
     {
         $service = new PostService();
 
-        $dirtyHtml = '<p>Texto legítimo <script>alert("hack")</script></p>';
+        $dirtyHtml = '<p><span style="font-family: \'Playfair Display\', serif; font-size: 20px;">Texto con tipografía elegante</span> <script>alert("hack")</script></p>';
         $post = $service->savePost([
             'title'   => 'Liderazgo Consciente y Estratégico',
             'content' => $dirtyHtml,
@@ -29,7 +29,9 @@ final class EditorialTest extends CIUnitTestCase
 
         $this->assertNotEmpty($post->id);
         $this->assertStringNotContainsString('<script>', (string) $post->content);
-        $this->assertStringContainsString('Texto legítimo', (string) $post->content);
+        $this->assertStringContainsString('Texto con tipografía elegante', (string) $post->content);
+        $this->assertStringContainsString('font-family', (string) $post->content);
+        $this->assertStringContainsString('Playfair Display', (string) $post->content);
         $this->assertSame('liderazgo-consciente-y-estrategico', $post->slug);
         $this->assertGreaterThanOrEqual(1, $post->reading_minutes);
 

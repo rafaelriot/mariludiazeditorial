@@ -19,7 +19,14 @@ class PostService
         $this->postModel = $postModel ?? model(PostModel::class);
 
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Allowed', 'p,b,strong,i,em,u,a[href|title|target|rel],ul,ol,li,blockquote,h2,h3,h4,hr,br,img[src|alt|title|width|height]');
+        $config->set('HTML.Allowed', 'p[style|class],span[style|class],b,strong,i,em,u,s,sub,sup,a[href|title|target|rel],ul,ol,li,blockquote[style|class],h2[style|class],h3[style|class],h4[style|class],hr,br,img[src|alt|title|width|height]');
+        $config->set('CSS.AllowedProperties', [
+            'font-family'      => true,
+            'font-size'        => true,
+            'text-align'       => true,
+            'color'            => true,
+            'background-color' => true,
+        ]);
         $config->set('HTML.TargetBlank', true);
         $config->set('HTML.Nofollow', true);
         $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true, 'mailto' => true]);
