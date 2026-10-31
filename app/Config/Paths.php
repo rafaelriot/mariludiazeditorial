@@ -87,4 +87,26 @@ class Paths
      * value - the directory should not be publicly accessible.
      */
     public string $envDirectory = __DIR__ . '/../../';
+
+    public function __construct()
+    {
+        // Auto-detección flexible de .env para entornos de hosting compartido (Hostinger, cPanel)
+        $currentPath = rtrim($this->envDirectory, '/\\') . DIRECTORY_SEPARATOR . '.env';
+        if (! is_file($currentPath)) {
+            $candidates = [
+                __DIR__ . '/../../../',               // domains/dominio.com/.env
+                __DIR__ . '/../../../../',             // domains/.env
+                __DIR__ . '/../../../../../',          // /home/uXXXX/.env
+                isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] . '/' : '',
+                isset($_SERVER['DOCUMENT_ROOT']) ? dirname($_SERVER['DOCUMENT_ROOT']) . '/' : '',
+            ];
+
+            foreach ($candidates as $dir) {
+                if ($dir && is_file(rtrim($dir, '/\\') . DIRECTORY_SEPARATOR . '.env')) {
+                    $this->envDirectory = rtrim($dir, '/\\') . DIRECTORY_SEPARATOR;
+                    break;
+                }
+            }
+        }
+    }
 }

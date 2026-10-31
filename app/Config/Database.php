@@ -191,6 +191,22 @@ class Database extends Config
     {
         parent::__construct();
 
+        // Respaldo de seguridad: si las credenciales siguen vacías, intentar cargarlas de env() o getenv()
+        if (empty($this->default['database']) || empty($this->default['username'])) {
+            $this->default['hostname'] = env('database.default.hostname', getenv('database.default.hostname') ?: ($this->default['hostname'] ?: 'localhost'));
+            $this->default['database'] = env('database.default.database', getenv('database.default.database') ?: $this->default['database']);
+            $this->default['username'] = env('database.default.username', getenv('database.default.username') ?: $this->default['username']);
+            $this->default['password'] = env('database.default.password', getenv('database.default.password') ?: $this->default['password']);
+        }
+
+        // Si estamos en Hostinger y por alguna razón el servidor web no cargó el archivo .env:
+        if (empty($this->default['database']) && isset($_SERVER['HTTP_HOST']) && str_contains($_SERVER['HTTP_HOST'], 'hostingersite.com')) {
+            $this->default['hostname'] = 'localhost';
+            $this->default['database'] = 'u243956904_marilu_blog';
+            $this->default['username'] = 'u243956904_marilu';
+            $this->default['password'] = 'h6&AQ9+X';
+        }
+
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
         // we don't overwrite live data on accident.
