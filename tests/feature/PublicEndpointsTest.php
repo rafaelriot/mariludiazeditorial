@@ -50,7 +50,7 @@ final class PublicEndpointsTest extends CIUnitTestCase
 
     public function testAdminRequiresAuthentication(): void
     {
-        $result = $this->get('/admin');
+        $result = $this->get('/' . admin_path());
         // Unauthenticated access redirects to login
         $result->assertRedirect();
     }

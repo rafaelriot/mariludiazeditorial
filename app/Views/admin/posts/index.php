@@ -8,26 +8,26 @@
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
         <!-- Pestañas de Estado -->
         <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto">
-            <a href="<?= base_url('admin/historias') ?>"
+            <a href="<?= admin_url('historias') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= ! $currentStatus ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Todas
             </a>
-            <a href="<?= base_url('admin/historias?status=published') ?>"
+            <a href="<?= admin_url('historias?status=published') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= $currentStatus === 'published' ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Publicadas
             </a>
-            <a href="<?= base_url('admin/historias?status=draft') ?>"
+            <a href="<?= admin_url('historias?status=draft') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= $currentStatus === 'draft' ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Borradores
             </a>
-            <a href="<?= base_url('admin/historias?status=scheduled') ?>"
+            <a href="<?= admin_url('historias?status=scheduled') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= $currentStatus === 'scheduled' ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Programadas
             </a>
         </div>
 
         <!-- Buscador -->
-        <form method="get" action="<?= base_url('admin/historias') ?>" class="w-full sm:w-72 relative">
+        <form method="get" action="<?= admin_url('historias') ?>" class="w-full sm:w-72 relative">
             <?php if ($currentStatus): ?>
                 <input type="hidden" name="status" value="<?= esc($currentStatus) ?>">
             <?php endif; ?>
@@ -75,7 +75,7 @@
                                             </div>
                                         <?php endif; ?>
                                         <div class="min-w-0">
-                                            <a href="<?= base_url('admin/historias/' . $post->id . '/editar') ?>" class="font-semibold text-[#0B2038] hover:text-[#063B73] truncate block">
+                                            <a href="<?= admin_url('historias/' . $post->id . '/editar') ?>" class="font-semibold text-[#0B2038] hover:text-[#063B73] truncate block">
                                                 <?= esc($post->title ?: ($post->excerpt ?: 'Historia sin título')) ?>
                                             </a>
                                             <p class="text-[11px] text-gray-400 font-mono truncate">
@@ -125,11 +125,11 @@
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                         </a>
 
-                                        <a href="<?= base_url('admin/historias/' . $post->id . '/editar') ?>" class="p-1.5 text-gray-400 hover:text-[#063B73]" title="Editar historia">
+                                        <a href="<?= admin_url('historias/' . $post->id . '/editar') ?>" class="p-1.5 text-gray-400 hover:text-[#063B73]" title="Editar historia">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </a>
 
-                                        <form action="<?= base_url('admin/historias/' . $post->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Seguro que deseas eliminar esta historia?');">
+                                        <form action="<?= admin_url('historias/' . $post->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Seguro que deseas eliminar esta historia?');">
                                             <?= csrf_field() ?>
                                             <button type="submit" class="p-1.5 text-gray-400 hover:text-red-600" title="Eliminar historia">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>

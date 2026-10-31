@@ -135,4 +135,14 @@ final class EditorialTest extends CIUnitTestCase
         // Limpiar
         $subModel->delete($id, true);
     }
+
+    public function testAdminHelperUrls(): void
+    {
+        $path = admin_path();
+        $this->assertNotEmpty($path);
+        $this->assertSame(trim((string) env('ADMIN_PATH', 'admin'), '/ '), $path);
+
+        $url = admin_url('historias');
+        $this->assertStringContainsString($path . '/historias', $url);
+    }
 }

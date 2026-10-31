@@ -7,19 +7,19 @@
     <!-- Filtros de Estado de Comentarios -->
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
         <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto">
-            <a href="<?= base_url('admin/comentarios') ?>"
+            <a href="<?= admin_url('comentarios') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= ! $currentStatus ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Todos (<?= $counts['all'] ?>)
             </a>
-            <a href="<?= base_url('admin/comentarios?status=pending') ?>"
+            <a href="<?= admin_url('comentarios?status=pending') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= $currentStatus === 'pending' ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Pendientes (<?= $counts['pending'] ?>)
             </a>
-            <a href="<?= base_url('admin/comentarios?status=approved') ?>"
+            <a href="<?= admin_url('comentarios?status=approved') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= $currentStatus === 'approved' ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Aprobados (<?= $counts['approved'] ?>)
             </a>
-            <a href="<?= base_url('admin/comentarios?status=spam') ?>"
+            <a href="<?= admin_url('comentarios?status=spam') ?>"
                class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors <?= $currentStatus === 'spam' ? 'bg-[#063B73] text-white' : 'text-[#5A6776] hover:bg-gray-100' ?>">
                 Spam (<?= $counts['spam'] ?>)
             </a>
@@ -94,7 +94,7 @@
                                 <td class="p-4 text-right">
                                     <div class="flex items-center justify-end gap-1.5">
                                         <?php if ($c->status !== 'approved'): ?>
-                                            <form action="<?= base_url('admin/comentarios/' . $c->id . '/estado/approved') ?>" method="post">
+                                            <form action="<?= admin_url('comentarios/' . $c->id . '/estado/approved') ?>" method="post">
                                                 <?= csrf_field() ?>
                                                 <button type="submit" class="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-semibold" title="Aprobar">
                                                     ✓ Aprobar
@@ -103,7 +103,7 @@
                                         <?php endif; ?>
 
                                         <?php if ($c->status !== 'spam'): ?>
-                                            <form action="<?= base_url('admin/comentarios/' . $c->id . '/estado/spam') ?>" method="post">
+                                            <form action="<?= admin_url('comentarios/' . $c->id . '/estado/spam') ?>" method="post">
                                                 <?= csrf_field() ?>
                                                 <button type="submit" class="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-700 text-[11px]" title="Marcar como spam">
                                                     Spam
@@ -111,7 +111,7 @@
                                             </form>
                                         <?php endif; ?>
 
-                                        <form action="<?= base_url('admin/comentarios/' . $c->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Eliminar este comentario permanentemente?');">
+                                        <form action="<?= admin_url('comentarios/' . $c->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Eliminar este comentario permanentemente?');">
                                             <?= csrf_field() ?>
                                             <button type="submit" class="p-1 text-gray-400 hover:text-red-600" title="Eliminar">
                                                 ✕

@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 
 <form id="post-form"
-      action="<?= $isEdit ? base_url('admin/historias/' . $post->id) : base_url('admin/historias') ?>"
+      action="<?= $isEdit ? admin_url('historias/' . $post->id) : admin_url('historias') ?>"
       method="post">
     <?= csrf_field() ?>
 
@@ -17,7 +17,7 @@
         </div>
 
         <div class="flex items-center gap-2 w-full sm:w-auto">
-            <a href="<?= base_url('admin/historias') ?>" class="px-4 py-2 border border-gray-200 text-xs font-semibold rounded-xl text-[#5A6776] hover:bg-gray-50 transition-colors">
+            <a href="<?= admin_url('historias') ?>" class="px-4 py-2 border border-gray-200 text-xs font-semibold rounded-xl text-[#5A6776] hover:bg-gray-50 transition-colors">
                 Descartar
             </a>
             <button type="submit" name="status" value="draft" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded-xl text-[#0B2038] transition-colors">
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const csrfHash = document.querySelector('meta[name="csrf-token"]')?.content;
         if (csrfHash) formData.append(csrfName, csrfHash);
 
-        fetch('<?= base_url('admin/media') ?>', {
+        fetch('<?= admin_url('media') ?>', {
             method: 'POST',
             body: formData,
             headers: { 'X-Requested-With': 'XMLHttpRequest' }

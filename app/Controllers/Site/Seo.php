@@ -32,7 +32,7 @@ class Seo extends BaseController
     public function robots()
     {
         $sitemapUrl = base_url('sitemap.xml');
-        $body = "User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: {$sitemapUrl}\n";
+        $body = "User-agent: *\nAllow: /\nDisallow: /login\n\nSitemap: {$sitemapUrl}\n";
         return $this->response->setContentType('text/plain')->setBody($body);
     }
 }

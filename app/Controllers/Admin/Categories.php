@@ -43,7 +43,7 @@ class Categories extends BaseController
             return redirect()->back()->withInput()->with('error', implode(' ', $this->categoryModel->errors()));
         }
 
-        return redirect()->to(base_url('admin/categorias'))->with('message', 'Categoría creada correctamente.');
+        return redirect()->to(admin_url('categorias'))->with('message', 'Categoría creada correctamente.');
     }
 
     public function update(int $id)
@@ -70,13 +70,13 @@ class Categories extends BaseController
             return redirect()->back()->withInput()->with('error', implode(' ', $this->categoryModel->errors()));
         }
 
-        return redirect()->to(base_url('admin/categorias'))->with('message', 'Categoría actualizada.');
+        return redirect()->to(admin_url('categorias'))->with('message', 'Categoría actualizada.');
     }
 
     public function delete(int $id)
     {
         $this->categoryModel->delete($id);
-        return redirect()->to(base_url('admin/categorias'))->with('message', 'Categoría eliminada.');
+        return redirect()->to(admin_url('categorias'))->with('message', 'Categoría eliminada.');
     }
 }
 

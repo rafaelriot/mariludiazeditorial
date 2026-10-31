@@ -17,7 +17,7 @@
         <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
             <h3 class="font-serif font-bold text-sm text-[#063B73] mb-4">Nueva Categoría</h3>
 
-            <form action="<?= base_url('admin/categorias') ?>" method="post" class="space-y-4">
+            <form action="<?= admin_url('categorias') ?>" method="post" class="space-y-4">
                 <?= csrf_field() ?>
 
                 <div>
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <form action="<?= base_url('admin/categorias/' . $cat->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Eliminar categoría? Las historias quedarán sin categoría.');">
+                            <form action="<?= admin_url('categorias/' . $cat->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Eliminar categoría? Las historias quedarán sin categoría.');">
                                 <?= csrf_field() ?>
                                 <button type="submit" class="text-gray-400 hover:text-red-600 p-1.5" title="Eliminar">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>

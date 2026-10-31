@@ -34,6 +34,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'login-lockout' => \App\Filters\LoginLockout::class,
     ];
 
     /**
@@ -106,5 +107,23 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        // Bloqueo por fuerza bruta: 5 intentos fallidos en 15 min por IP
+        'login-lockout' => ['before' => ['login']],
+        // Límite de peticiones de Shield (máx. 10 por minuto por IP) en rutas de autenticación
+        'auth-rates'    => ['before' => ['login', 'auth/google/mock']],
+    ];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Honeypot: trampa invisible contra bots en formularios públicos.
+        // Se excluye el panel administrativo (ruta configurable vía ADMIN_PATH).
+        $adminPath    = trim((string) env('ADMIN_PATH', 'admin'), '/ ') ?: 'admin';
+        $adminPattern = $adminPath . '/*';
+
+        $this->globals['before']['honeypot'] = ['except' => [$adminPattern]];
+        $this->globals['after']['honeypot']  = ['except' => [$adminPattern, 'sitemap.xml', 'feed.xml', 'robots.txt']];
+    }
 }

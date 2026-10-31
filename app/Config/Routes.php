@@ -39,9 +39,11 @@ if (ENVIRONMENT === 'development') {
 service('auth')->routes($routes, ['except' => ['register', 'magic-link']]);
 
 // ---------------------------------------------------------------------
-// Panel administrativo
+// Panel administrativo (ruta configurable con ADMIN_PATH en .env)
 // ---------------------------------------------------------------------
-$routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'group:admin,editor'], static function (RouteCollection $routes): void {
+$adminPath = trim((string) env('ADMIN_PATH', 'admin'), '/ ') ?: 'admin';
+
+$routes->group($adminPath, ['namespace' => 'App\Controllers\Admin', 'filter' => 'group:admin,editor'], static function (RouteCollection $routes): void {
     $routes->get('/', 'Dashboard::index', ['as' => 'admin.dashboard']);
 
     // Historias

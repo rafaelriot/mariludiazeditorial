@@ -11,7 +11,7 @@
             <p class="text-xs text-[#5A6776]">Lectores que reciben los ensayos dominicales (Total: <?= $total ?>)</p>
         </div>
 
-        <a href="<?= base_url('admin/suscriptores/exportar') ?>" class="inline-flex items-center gap-2 px-4 py-2 bg-[#063B73] hover:bg-[#094E96] text-white text-xs font-semibold rounded-xl transition-colors shadow-sm">
+        <a href="<?= admin_url('suscriptores/exportar') ?>" class="inline-flex items-center gap-2 px-4 py-2 bg-[#063B73] hover:bg-[#094E96] text-white text-xs font-semibold rounded-xl transition-colors shadow-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
             <span>Exportar CSV (Excel / Substack)</span>
         </a>
@@ -56,7 +56,7 @@
                                     <?= $s->created_at ? $s->created_at->toLocalizedString('d MMM yyyy, HH:mm') : '—' ?>
                                 </td>
                                 <td class="p-4 text-right">
-                                    <form action="<?= base_url('admin/suscriptores/' . $s->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Eliminar a este suscriptor?');">
+                                    <form action="<?= admin_url('suscriptores/' . $s->id . '/eliminar') ?>" method="post" onsubmit="return confirm('¿Eliminar a este suscriptor?');">
                                         <?= csrf_field() ?>
                                         <button type="submit" class="text-gray-400 hover:text-red-600 p-1" title="Eliminar">
                                             ✕

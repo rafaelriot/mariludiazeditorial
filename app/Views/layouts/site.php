@@ -115,7 +115,7 @@
                         <?php endif; ?>
 
                         <?php if (auth()->user()->can('admin.access')): ?>
-                            <a href="<?= base_url('admin') ?>" class="hidden sm:inline-flex items-center gap-1 text-xs font-semibold bg-[#063B73] text-white px-3 py-1.5 rounded-full hover:bg-[#094E96] transition-colors">
+                            <a href="<?= admin_url() ?>" class="hidden sm:inline-flex items-center gap-1 text-xs font-semibold bg-[#063B73] text-white px-3 py-1.5 rounded-full hover:bg-[#094E96] transition-colors">
                                 Panel
                             </a>
                         <?php endif; ?>

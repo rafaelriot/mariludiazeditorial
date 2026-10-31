@@ -51,7 +51,7 @@
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
         <div class="p-5 border-b border-gray-200 flex items-center justify-between">
             <h3 class="font-serif font-bold text-base text-[#063B73]">Últimas Historias Creadas</h3>
-            <a href="<?= base_url('admin/historias/nueva') ?>" class="text-xs font-semibold text-[#063B73] hover:text-[#D996A6]">
+            <a href="<?= admin_url('historias/nueva') ?>" class="text-xs font-semibold text-[#063B73] hover:text-[#D996A6]">
                 + Nueva Historia
             </a>
         </div>
@@ -59,7 +59,7 @@
         <div class="divide-y divide-gray-100">
             <?php if (empty($recentPosts)): ?>
                 <div class="p-8 text-center text-xs text-[#5A6776]">
-                    Aún no hay historias registradas. Haz clic en <a href="<?= base_url('admin/historias/nueva') ?>" class="text-[#063B73] font-semibold">Nueva Historia</a> para publicar la primera.
+                    Aún no hay historias registradas. Haz clic en <a href="<?= admin_url('historias/nueva') ?>" class="text-[#063B73] font-semibold">Nueva Historia</a> para publicar la primera.
                 </div>
             <?php else: ?>
                 <?php foreach ($recentPosts as $p): ?>
@@ -93,7 +93,7 @@
                                 <?= ucfirst($p->status) ?>
                             </span>
 
-                            <a href="<?= base_url('admin/historias/' . $p->id . '/editar') ?>" class="text-xs font-medium text-[#063B73] hover:underline">
+                            <a href="<?= admin_url('historias/' . $p->id . '/editar') ?>" class="text-xs font-medium text-[#063B73] hover:underline">
                                 Editar
                             </a>
                         </div>

@@ -82,7 +82,7 @@ class Posts extends BaseController
             $data['author_id'] = auth()->id();
             $post = $this->postService->savePost($data, $galleryIds, $tagNames);
 
-            return redirect()->to(base_url('admin/historias'))
+            return redirect()->to(admin_url('historias'))
                 ->with('message', "Historia '{$post->slug}' guardada correctamente.");
         } catch (\Throwable $e) {
             return redirect()->back()
@@ -129,7 +129,7 @@ class Posts extends BaseController
         try {
             $this->postService->savePost($data, $galleryIds, $tagNames, $id);
 
-            return redirect()->to(base_url('admin/historias'))
+            return redirect()->to(admin_url('historias'))
                 ->with('message', 'Historia actualizada correctamente.');
         } catch (\Throwable $e) {
             return redirect()->back()
@@ -148,7 +148,7 @@ class Posts extends BaseController
             $this->postModel->delete($id);
         }
 
-        return redirect()->to(base_url('admin/historias'))
+        return redirect()->to(admin_url('historias'))
             ->with('message', 'Historia eliminada correctamente.');
     }
 
